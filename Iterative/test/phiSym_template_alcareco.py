@@ -4,12 +4,12 @@ from Configuration.StandardSequences.Eras import eras
 process = cms.Process("PHASEHFX",eras.Run2_2018)
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32 (1000)
+    input = cms.untracked.int32 (-1)
 )
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 10
-process.MessageLogger.cerr.default.limit = 10
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.MessageLogger.cerr.default.limit = 1000
 
 process.load('Configuration.StandardSequences.Services_cff')
 process.load("Configuration.StandardSequences.GeometryDB_cff")
@@ -21,13 +21,13 @@ process.GlobalTag.globaltag = '101X_dataRun2_Prompt_v9'
 
 
 process.phaseHF = cms.EDAnalyzer ("phiSym",
-                                  textFile = cms.untracked.string('yhisto_6.txt'),
+                                  textFile = cms.untracked.string(OUTPUTFILE2),
                                   hfreco =  cms.InputTag("hfreco"),
-                                  hbhereco = cms.InputTag("hbheprereco")
+                                  hbhereco = cms.InputTag("hbhereco")
  )
 
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string('phisym.root'),
+    fileName = cms.string(OUTPUTFILE1),
 )
 
 #----------------------------
@@ -38,7 +38,5 @@ process.p = cms.Path(
 )
 
 process.source = cms.Source ("PoolSource" ,
-                             fileNames=cms.untracked.vstring(
-        'file:/eos/cms/store/data/Run2018A/EGamma/ALCARECO/HcalCalIterativePhiSym-PromptReco-v1/000/315/361/00000/529CFDCB-A64D-E811-B2C0-FA163EC02359.root'
-				)
+                             fileNames=cms.untracked.vstring(INPUTLIST)
 )
